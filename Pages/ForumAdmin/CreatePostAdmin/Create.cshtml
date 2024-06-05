@@ -1,0 +1,118 @@
+﻿@page
+@model VietnamSnackis.Pages.ForumAdmin.CreatePostAdmin.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h1 class="display-8">SKAPA INLÄGG</h1>
+</div>
+
+<div class="row">
+    @if (Model.Post != null)
+    {
+        @foreach (var post in Model.CreatePost)
+        {
+            <div class="col-md-2" style="width: 20rem;">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Post.Header" class="control-label">Rubrik</label>
+                        <input asp-for="Post.Header" class="form-control" />
+                        <span asp-validation-for="Post.Header" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="Post.Content" class="control-label">Innehåll</label>
+                        <input asp-for="Post.Content" class="form-control" />
+                        <span asp-validation-for="Post.Content" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="Post.PostCreated" class="control-label">Inlägg skapat</label>
+                        <input asp-for="Post.PostCreated" class="form-control" />
+                        <span asp-validation-for="Post.PostCreated" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="Post.Image" class="control-label">Bifoga bild</label>
+                        <input asp-for="Post.Image" class="form-control" />
+                        <span asp-validation-for="Post.Image" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="Post.CategoryId" class="control-label">Kategori</label>
+                        <input asp-for="Post.CategoryId" class="form-control" />
+                        <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="Post.SubCategoryId" class="control-label">Underkategori</label>
+                        <input asp-for="Post.SubCategoryId" class="form-control" />
+                        <span asp-validation-for="Post.SubCategoryId" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="Post.UserId" class="control-label">Skapat av användare</label>
+                        <select asp-for="Post.UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <input type="submit" value="Skapa inlägg" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        }
+    }
+
+    @if (User != null)
+    {
+        <form method="post" enctype="multipart/form-data">
+            <label asp-for="Post.Header">Rubrik</label>
+            <input asp-for="Post.Header" />
+            <br />
+
+            <label asp-for="Post.CategoryId">Kategori</label>
+            <select asp-for="Post.CategoryId" >
+                <option value="Välj kategori"></option>
+@*                 @foreach(var category in Model.Categories)
+                {
+                    <option value="@category.Id">@category.Name</option> 
+                } *@
+
+            </select>
+
+            <br />
+
+            <label asp-for="Post.SubCategoryId">Underkategori</label>
+            <select asp-for="Post.SubCategoryId" />
+            <br />
+
+            <label asp-for="Post.Content">Innehåll</label>
+            <textarea asp-for="Post.Content" cols="60" rows="8"></textarea>
+            <br />
+
+            <label asp-for="Post.Image">Ladda upp bild</label>
+            <input type="file" name="UploadedImage" />
+            <br />
+
+            <input type="submit" class="btn btn-success" value="Skapa inlägg" />
+
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-warning">Du är inte inloggad, logga in eller skapa konto för att göra inlägg</div>
+    }
+
+    <div>
+        <a asp-page="Index">Tillbaka</a>
+    </div>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }

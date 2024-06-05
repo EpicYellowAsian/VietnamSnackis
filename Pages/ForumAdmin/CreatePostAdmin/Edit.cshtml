@@ -1,0 +1,66 @@
+﻿@page
+@model VietnamSnackis.Pages.ForumAdmin.CreatePostAdmin.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Post.Id" />
+            <div class="form-group">
+                <label asp-for="Post.Header" class="control-label"></label>
+                <input asp-for="Post.Header" class="form-control" />
+                <span asp-validation-for="Post.Header" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Content" class="control-label"></label>
+                <input asp-for="Post.Content" class="form-control" />
+                <span asp-validation-for="Post.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.PostCreated" class="control-label"></label>
+                <input asp-for="Post.PostCreated" class="form-control" />
+                <span asp-validation-for="Post.PostCreated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Image" class="control-label"></label>
+                <input asp-for="Post.Image" class="form-control" />
+                <span asp-validation-for="Post.Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.CategoryId" class="control-label"></label>
+                <input asp-for="Post.CategoryId" class="form-control" />
+                <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.SubCategoryId" class="control-label"></label>
+                <input asp-for="Post.SubCategoryId" class="form-control" />
+                <span asp-validation-for="Post.SubCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.UserId" class="control-label"></label>
+                <select asp-for="Post.UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="Post.UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

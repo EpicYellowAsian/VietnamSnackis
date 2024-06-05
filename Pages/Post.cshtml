@@ -1,0 +1,111 @@
+﻿@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Inlägg"; 
+}
+
+<div class="text-center">
+    <h1 class="display-8">Se befintliga inlägg eller skapa ett nytt inlägg</h1>
+    <h5>Fick du inte svar på det du sökte? Skapa ett nytt inlägg med dina funderingar</h5>
+</div>
+
+<div class="row">
+    @if (Model.CreatePosts != null) // Skapa inlägg
+    {      
+        @foreach (var post in Model.CreatePosts)
+        {
+            var comment = post.Comments;
+
+            <div class="card-m2" style="width: 20rem;">
+                <img class="card-img-top" width="1200" src="~/userImages/@post.Image" /> 
+                <div class="card-body">
+                    <h2 class="card-title">@post.Header</h2> 
+                    <p class="card-text">@post.Content</p>
+@*                     <h4>Skapad av: @post.User</h4> *@
+
+                    @if(User.Identity.IsAuthenticated && Model.UserId == post.UserId)
+                    {
+                        <a asp-route-deleteId="@post.Id" class="btn btn-primary">Radera inlägg</a>
+                    }
+
+                    @if (@post.Comments != null && @User.Identity.IsAuthenticated)
+                    {
+                        <h5>Kommentarer: </h5> 
+                        <br />
+                        <ul>
+                            @foreach (var comments in post.Comments)
+                            {
+                                <li class="text-dark">@comments.Content
+                                    <br />
+                                    Skriven av: <strong>@comments.CommentedByUser</strong>
+                                </li>
+                            }
+                        </ul>
+
+                    }
+                    @if(!@User.Identity.IsAuthenticated) 
+                    {
+                        <p>Du måste vara inloggad för att se och skriva kommentar</p>
+                    }
+                    @if(User.Identity.IsAuthenticated)
+                    {
+                         <form asp-page-handler="AddComment" method="post">
+                            <input type="hidden" name="postId" value="@post.Id" /> 
+                            @* <input type="" name="userId" value="@Model.UserId" /> *@
+                            @* <input type="" name="user" value="@post.User" /> *@
+@*                             <input type="" name="comments" value="@Model.Comments" /> *@
+                            @* <input type="" name="uploadedImage" value="@Model.UploadedImage" /> *@
+                            @* <input type="" name="comments" value="@post.Comments" /> *@
+                            <textarea name="content" rows="4" cols="50"></textarea>
+                            <button type="submit">Skicka kommentar</button>
+                        </form> 
+                    }
+
+                </div>
+            </div>
+            <p class="card-footer">@post.PostCreated</p>
+        }
+    }
+</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form method="post" enctype="multipart/form-data">
+        <label asp-for="CreatePost.Header">Rubrik</label>
+        <input asp-for="CreatePost.Header" />
+        <br />
+
+        <label asp-for="CreatePost.CategoryId">Kategori</label>
+        <select asp-for="CreatePost.CategoryId">
+            <option value="Välj kategori"></option>
+            @foreach (var category in Model.Categories) 
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+
+        </select>
+        <br /> 
+
+        <label asp-for="CreatePost.Content">Innehåll</label>
+        <textarea asp-for="CreatePost.Content" cols="60" rows="10"></textarea>
+        <br />
+
+        <label asp-for="CreatePost.Image">Bifoga bild</label>
+        <input type="file" name="UploadedImage" />
+        <br />
+
+@*         <label asp-for="CreatePost.UserId">Skapad av: </label>
+        <p>@Model.User.Identity.Name</p>
+        <br /> *@
+
+        <input type="submit" class="btn btn-success" value="Skapa inlägg" />
+
+    </form>
+}
+else
+{
+    <div class="alert alert-warning">
+        Du är inte inloggad
+        <p>Skapa ett konto eller logga in för att göra/kommentera inlägg</p>
+    </div>
+}

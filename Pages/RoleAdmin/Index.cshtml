@@ -1,0 +1,52 @@
+﻿@page
+@model VietnamSnackis.Pages.RoleAdmin.IndexModel
+@{
+}
+
+<h3>Här kan du som administratör göra ändringar</h3>
+<br />
+
+@if(User.IsInRole("Admin"))
+{
+    <table class="table">
+        <tr>
+            <th>Registrerade användare</th>
+
+            @foreach (var role in Model.Roles)
+            {
+                <th>@role.Name</th>
+            }
+        </tr>
+
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.UserName</td>
+
+                @foreach (var role in Model.Roles)
+                {
+                    if (await Model._userManager.IsInRoleAsync(user, role.Name))
+                    {
+                        <td><a href="?RemoveUserId=@user.Id&Rolename=@role.Name">Ja</a></td>
+                    }
+                    else
+                    {
+                        <td><a href="?AddUserId=@user.Id&Rolename=@role.Name">Nej</a></td>
+                    }
+                }
+            </tr>
+        }
+
+    </table>
+}
+
+else
+{
+    <h2>Du har inte behörighet att se denna sida</h2>  
+}
+
+@* <form method="post">
+    <label for="Rolename">Ny Roll</label>
+    <input name="Rolename" id="Rolename"/>
+    <input type="submit" value="Skapa ny roll"/> 
+</form>  *@

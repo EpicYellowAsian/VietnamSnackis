@@ -1,0 +1,27 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Startsida";
+}
+
+@if(Model.MyUser == null)
+{
+    <div class="text-center">
+        <h1 class="display-8">VÄLKOMMEN TILL DITT LOKALA FORUM OM VIETNAM</h1>
+        <h3>Hur är det att bo där? Hur är vädret? Vad kan man få för 100kr? Vilka sevärdheter bör man besöka?</h3>
+        <br />
+        <h3>Här finns alla svar som du behöver inför din resa</h3>
+        <br />
+        <img src="Images/Vietnam.gif" />
+    </div>
+}
+
+@if (Model.MyUser != null)
+{
+    <div class="text-center">
+        <h4 class="display-8">Kul att se dig @Model.MyUser.Firstname @Model.MyUser.Lastname!</h4>
+        <h5>Hoppas du får en trevlig vistelse här idag :) </h5> 
+        <br />
+        <img src="Images/Vietnam.gif" /> 
+    </div> 
+} 
